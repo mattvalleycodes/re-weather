@@ -6,7 +6,7 @@ type city = {
 
 let cities = [
   { name: "Sydney", temp: "14", condition: "Cloudy" },
-  { name: "San Fransico", temp: "10", condition: "Sunny" },
+  { name: "San Francisco", temp: "10", condition: "Sunny" },
   {name: "Tehran", temp: "20", condition: "Rainy" }
 ];
 
@@ -23,7 +23,7 @@ let cityStyle = ReactDOMRe.Style.make(
 );
 
 let toWeather = (c: city) => {
-  <li style={cityStyle}>
+  <li style={cityStyle} key={c.name}>
     <Weather city={c.name} condition={c.condition} temp={c.temp} />
   </li>
 
