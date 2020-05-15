@@ -2,11 +2,12 @@
   "name": "re-weather",
   "version": "0.1.0",
   "scripts": {
-    "build": "bsb -make-world",
+    "build": "bsb -clean-world -make-world",
     "start": "bsb -make-world -w -ws _ ",
     "clean": "bsb -clean-world",
     "server": "moduleserve ./ --port 8000",
-    "test": "mocha 'src/**/*Specs.bs.js'"
+    "test": "jest",
+    "test:mocha": "mocha 'src/**/*Specs.bs.js'"
   },
   "keywords": [
     "BuckleScript",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "bs-chai": "^1.0.1",
     "bs-enzyme": "^0.6.1",
+    "@glennsl/bs-jest": "^0.4.9",
     "bs-mocha": "^1.0.0",
     "bs-platform": "^7.3.2",
     "chai": "^4.2.0",
