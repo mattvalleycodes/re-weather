@@ -34,19 +34,25 @@ let tempStyle = ReactDOMRe.Style.make(
 );
 
 [@react.component]
-let make = (~city: string, ~condition: string, ~temp: string) => {
-  let url = "http://api.weatherapi.com/v1/current.json?key=955044fede38469c925103318201405&q=" ++ city;
-  let response = useFetch(url);
+let make = (~city: string) => {
+  let context = React.useContext(WeatherContext.context);
 
-  switch(response) {
-    | LoadingWeatherInfo => <div>{React.string("Loading weather info")}</div>
-    | ErrorLoadingWeatherInfo => <div>{React.string("Failed to load it")}</div>
-    | LoadedWeatherInfo(temp, condition) => {
-        <div style={mainStyle}>
-          <h1 id="cityName" style={cityStyle}>{React.string(city)}</h1>
-          <div style={conditionStyle}>{React.string(condition)}</div>
-          <span style={tempStyle}>{React.string(" - " ++ string_of_int(temp))}</span>
-        </div>
+  switch(context.token) {
+  | None => <div>{React.string("missing API token")}</div>
+  | Some(token) => {
+      let url = "http://api.weatherapi.com/v1/current.json?key=" ++ token ++ "&q=" ++ city;
+
+      switch(useFetch(url)) {
+        | Fetching => <div>{React.string("Loading weather info for" ++ city)}</div>
+        | FailedToFetch => <div>{React.string("Failed to fetch weather info for" ++ city)}</div>
+        | Fetched(weather: WeatherData.t) => {
+            <div style={mainStyle}>
+              <h1 id="cityName" style={cityStyle}>{React.string(city)}</h1>
+              <div style={conditionStyle}>{React.string(weather.current.condition.text)}</div>
+              <span style={tempStyle}>{React.string(" - " ++ string_of_int(weather.current.temp_c))}</span>
+            </div>
+        }
+      }
     }
   }
 }

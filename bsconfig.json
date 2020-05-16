@@ -23,6 +23,6 @@
   "suffix": ".bs.js",
   "namespace": true,
   "bs-dependencies": ["reason-react", "bs-chai", "bs-enzyme", "bs-mocha"],
-  "bs-dev-dependencies": ["@glennsl/bs-jest"],
+  "bs-dev-dependencies": ["@glennsl/bs-jest", "reason-react"],
   "refmt": 3
 }

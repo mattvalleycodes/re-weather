@@ -13,7 +13,7 @@ describe("<Weather />", () => {
   );
 
   it("includes the city information", () => {
-    let weather = shallow(<Weather city="Sydney" temp="20" condition="Cloudy" />);
+    let weather = shallow(<Weather city="Sydney" />);
     let city = weather |> find("h1") |> text;
     let condition = weather |> find("div") |> at(1) |> text;
     let temp = weather |> find("span") |> text;

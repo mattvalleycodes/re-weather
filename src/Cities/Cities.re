@@ -1,14 +1,9 @@
-type city = {
-  name: string,
-  temp: string,
-  condition: string
+type lt = {
+  search: string,
 };
 
-let cities = [
-  { name: "Sydney", temp: "14", condition: "Cloudy" },
-  { name: "San Francisco", temp: "10", condition: "Sunny" },
-  {name: "Tehran", temp: "20", condition: "Rainy" }
-];
+[@bs.val]
+external location: lt = "location";
 
 let citiesStyle = ReactDOMRe.Style.make(
   ~listStyle="none",
@@ -22,16 +17,33 @@ let cityStyle = ReactDOMRe.Style.make(
   ()
 );
 
-let toWeather = (c: city) => {
-  <li style={cityStyle} key={c.name}>
-    <Weather city={c.name} condition={c.condition} temp={c.temp} />
+let toWeather = (c) => {
+  <li style={cityStyle} key={c}>
+    <Weather city={c} />
   </li>
-
 };
+
+let cities = [|
+  "Sydney",
+  "San Francisco",
+  "Tehran"
+|];
 
 [@react.component]
 let make = () => {
-  let source = List.map(toWeather, cities);
+  open Utils;
 
-  <ul style={citiesStyle}>{React.array(Array.of_list(source))}</ul>
-};
+  let token = qs(location.search)[0];
+
+  let source = cities
+    -> Belt.Array.map(toWeather)
+    -> React.array;
+
+  let context: WeatherContext.t = {
+    token: Some(token.value),
+  };
+
+  <WeatherContext.Provider value={context}>
+    <ul style={citiesStyle}>{source}</ul>
+  </WeatherContext.Provider>
+}
